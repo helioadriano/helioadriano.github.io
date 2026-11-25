@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Helio Adriano | Accounting Portfolio</title>
+<meta name="description" content="Accounting portfolio of Helio Adriano: full accounting cycle, consolidations under IFRS, and graduate projects.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* VOICE playful occasion: a personal portfolio told as a retro handheld RPG, with the accounting kept exact
+   IDEA a pocket game cartridge: overworld map, text box, trainer card, quest log
+   PICTURE pixel town where each building is a portfolio section; Helio walks there with his coin sidekick Penny
+   COLOUR sky blue ground, grass green map, roofs in red/orange/magenta/blue/teal, sunshine yellow accent
+   TYPE Pixelify Sans for titles and dialogue + Nunito for reading
+   LAYOUT laptop: map full width, text box under it, location menu, then the open section; phone: same order stacked */
+:root{color-scheme:light dark;--bg:light-dark(#bfe6ff,#0f2238);--ink:light-dark(#13243a,#eef4ff);--card:light-dark(#ffffff,#18304d);--soft:light-dark(#eef7ff,#203c5e);--line:light-dark(#13243a,#9fc0e6);--muted:light-dark(#3d5470,#b6c8e0);--sun:#ffd23f;--red:#e8524a;--orange:#f39a2b;--mag:#d0479c;--blue:#3d7be0;--teal:#1fa39b;--green:#2f9e44}
+*{box-sizing:border-box;min-width:0}
+html{scroll-padding-top:16px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Nunito,system-ui,sans-serif;overflow-x:clip}
+h1,h2{font-family:"Pixelify Sans",Nunito,monospace;letter-spacing:0}
+h3,.px{font-family:Nunito,system-ui,sans-serif;font-weight:800}
+h1{font-size:clamp(32px,5vw,48px);line-height:1.05;margin:0;text-wrap:balance}
+h2{font-size:clamp(26px,3.4vw,34px);line-height:1.1;margin:0 0 6px}
+h3{font-size:20px;margin:22px 0 8px}
+p{margin:0 0 12px;max-width:68ch}
+.wrap{max-width:1040px;margin:0 auto;padding:0 max(16px,4vw)}
+header{padding:22px 0 14px;display:flex;flex-wrap:wrap;gap:8px 20px;align-items:end;justify-content:space-between}
+header p{margin:0;color:var(--muted);font-weight:600}
+.cart{background:#26344f;border-radius:18px 18px 40px 18px;padding:12px;box-shadow:0 6px 0 #18223a}
+.screen{position:relative;border-radius:8px;overflow:hidden;background:#7cd16b;aspect-ratio:20/12}
+.screen svg{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated;shape-rendering:crispEdges}
+.bld{cursor:pointer}
+.bld:focus{outline:none}
+.bld:focus-visible .hit,.bld:hover .hit{stroke:#fff;stroke-width:1.5;stroke-dasharray:3 2}
+.marker{animation:bob .8s steps(2) infinite}
+@keyframes bob{50%{transform:translateY(-3px)}}
+.box{position:relative;margin-top:12px;background:#fff;color:#13243a;border:4px solid #13243a;border-radius:10px;box-shadow:inset 0 0 0 3px #fff,inset 0 0 0 5px #7aa7d9;padding:16px 18px 14px;min-height:112px;cursor:pointer;font-family:"Pixelify Sans",Nunito,monospace;font-size:clamp(17px,2.2vw,20px);line-height:1.45}
+.box .who{position:absolute;top:-17px;left:14px;background:var(--sun);border:3px solid #13243a;border-radius:6px;padding:0 10px;font-size:15px;font-weight:700;display:flex;gap:6px;align-items:center}
+.box .who svg{width:18px;height:18px;image-rendering:pixelated}
+.box .next{position:absolute;right:14px;bottom:8px;animation:blink 1s steps(1) infinite;font-size:16px}
+.box .next[hidden]{display:none}
+@keyframes blink{50%{opacity:0}}
+.menu{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 8px}
+.menu button,.btn{font:600 16px/1 "Pixelify Sans",Nunito,monospace;min-height:44px;padding:0 14px;border-radius:10px;border:3px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;display:inline-flex;gap:8px;align-items:center;box-shadow:0 3px 0 var(--line)}
+.menu button:active,.btn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--line)}
+.menu button[aria-pressed=true]{background:var(--sun);color:#13243a;border-color:#13243a;box-shadow:0 3px 0 #13243a}
+.menu i{width:14px;height:14px;border-radius:3px;border:2px solid #13243a;flex:none}
+button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.panel{background:var(--card);border:4px solid var(--line);border-radius:14px;padding:clamp(18px,3vw,30px);margin:10px 0 28px;box-shadow:0 6px 0 var(--line)}
+.panel[hidden]{display:none}
+.lead{font-size:17px;color:var(--muted);font-weight:600}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));gap:18px;align-items:start}
+.tcard{background:linear-gradient(#ff7a6b,#e8524a);color:#fff;border:4px solid #13243a;border-radius:12px;padding:16px;display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center}
+.tcard .pic{background:#bfe6ff;border:3px solid #13243a;border-radius:8px;width:92px;height:112px;display:grid;place-items:center}
+.tcard .pic svg{width:66px;image-rendering:pixelated}
+.tcard dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:2px 10px;font-weight:700}
+.tcard dt{opacity:.85;font-weight:600}
+.tcard dd{margin:0}
+.badges{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:10px}
+.badge{display:flex;gap:10px;align-items:center;background:var(--soft);border-radius:10px;padding:8px 10px;font-weight:700;font-size:15px;line-height:1.25}
+.badge b{flex:none;width:34px;height:34px;border-radius:50%;border:3px solid #13243a;display:grid;place-items:center;font-family:Nunito,sans-serif;font-weight:800;color:#13243a}
+.chips{display:flex;flex-wrap:wrap;gap:8px;padding:0;margin:0;list-style:none}
+.chips li{background:var(--soft);border-radius:999px;padding:6px 14px;font-weight:700}
+.quest{display:grid;gap:12px;margin:0;padding:0;list-style:none}
+.quest li{background:var(--soft);border-radius:12px;padding:14px 16px;border-left:8px solid var(--teal)}
+.quest .when{font-weight:700;color:var(--muted);font-size:15px}
+.figs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:14px 0}
+@media(max-width:600px){.figs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.fig{background:var(--soft);border-radius:12px;padding:10px 12px}
+.fig span{display:block;font-size:14px;color:var(--muted);font-weight:700;line-height:1.2}
+.fig b{font:800 clamp(22px,3vw,28px)/1.2 Nunito,system-ui,sans-serif;white-space:nowrap;font-variant-numeric:tabular-nums}
+.seg{display:flex;flex-wrap:wrap;gap:8px}
+.seg .btn[aria-pressed=true]{background:var(--mag);color:#fff;border-color:#13243a}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{padding:7px 8px;border-bottom:1px solid color-mix(in srgb,var(--line) 25%,transparent);text-align:left;vertical-align:top}
+th{font-weight:800;font-size:14px;color:var(--muted)}
+td.n,th.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+tr.tot td{font-weight:800;border-top:2px solid var(--line)}
+.stepper{background:var(--soft);border-radius:14px;padding:16px;margin-top:8px}
+.stepper .top{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center;margin-bottom:10px}
+.dots{display:flex;gap:5px;flex-wrap:wrap}
+.dots span{width:14px;height:14px;border-radius:3px;background:color-mix(in srgb,var(--line) 25%,transparent)}
+.dots span.on{background:var(--mag)}
+.je td:first-child{width:70%}
+.je .cr td:first-child{padding-left:32px}
+.tip{display:flex;gap:10px;align-items:flex-start;margin-top:12px;font-weight:600}
+.tip svg{flex:none;width:32px;image-rendering:pixelated}
+.lock{background:repeating-linear-gradient(-45deg,#ffd23f 0 18px,#13243a 18px 36px);height:14px;border-radius:6px;margin:6px 0 16px}
+.books{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.books li{background:var(--soft);border-radius:10px;padding:8px 12px;border-left:6px solid var(--mag);line-height:1.3}
+.books span{display:block;font-size:14px;color:var(--muted);font-weight:600}
+.sum{background:var(--card);border:4px solid var(--line);border-radius:14px;padding:16px 18px;margin:0 0 16px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:10px 24px;box-shadow:0 5px 0 var(--line)}
+.sum p{margin:0}
+.sum .who2{font-size:17px;font-weight:700}
+.sum ul{margin:0;padding-left:20px;font-weight:600}
+.sum .reach{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+@media(max-width:700px){.sum{grid-template-columns:1fr}}
+.bars{display:grid;gap:8px;margin:10px 0}
+.bar{display:grid;grid-template-columns:minmax(0,11em) minmax(0,1fr) 5.5em;gap:10px;align-items:center;font-weight:600;font-size:15px}
+.bar .tr{background:color-mix(in srgb,var(--line) 12%,transparent);border-radius:6px;height:22px}
+.bar .fl{height:100%;border-radius:6px;border:2px solid #13243a}
+.bar b{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+@media(max-width:600px){.bar{grid-template-columns:minmax(0,1fr) 5em;font-size:14px}.bar .tr{grid-column:1/-1;order:3}}
+.mail{font:800 clamp(18px,3vw,24px) Nunito,system-ui,sans-serif;overflow-wrap:anywhere}
+footer{padding:0 0 30px;color:var(--muted);font-size:14px}
+@media(max-width:600px){.cart{padding:8px;border-radius:12px 12px 26px 12px}.tcard{grid-template-columns:1fr}.tcard .pic{width:100%;height:120px}table{font-size:13px}th,td{padding:6px 4px}}
+@media(prefers-reduced-motion:reduce){.marker,.box .next{animation:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>Helio's Ledger Quest</h1>
+  <p>Accounting portfolio of Helio Adriano · Edmonton, AB</p>
+</header>
+<section class="sum" aria-label="Quick summary">
+  <div>
+    <p class="who2">Accounting graduate (Master's in International Accounting &amp; Finance, University of Windsor) building a long-term career in accounting, and looking for an accounting role where I can grow.</p>
+    <ul style="margin-top:8px">
+      <li>Full accounting cycle: journal entries, adjustments, trial balances and financial statements</li>
+      <li>Consolidations and acquisitions under IFRS 3 and IFRS 10</li>
+      <li>Reconciliations and GL adjustments at Scotiabank</li>
+    </ul>
+  </div>
+  <div style="display:grid;gap:10px;align-content:start">
+    <p style="color:var(--muted);font-weight:600">Short on time? Each building opens one section. The Statements Lab and Consolidation Tower show the work itself.</p>
+    <div class="reach"><a class="btn" href="mailto:helioadriano30@gmail.com" style="text-decoration:none">Email</a><a class="btn" href="tel:+12267395745" style="text-decoration:none">Call</a><span style="font-weight:700">helioadriano30@gmail.com · +1 226 739 5745</span></div>
+  </div>
+</section>
+
+<div class="cart">
+  <div class="screen"><svg id="map" viewBox="0 0 320 192" role="img" aria-label="Pixel town map. Each building is a section of the portfolio."></svg></div>
+</div>
+
+<div class="box" id="box" role="button" tabindex="0" aria-live="polite" aria-label="Dialogue. Press to continue.">
+  <div class="who"><svg id="pennyTag" viewBox="0 0 10 12"></svg>PENNY</div>
+  <div id="say"></div>
+  <span class="next" id="nextMark" aria-hidden="true">▼</span>
+</div>
+
+<nav class="menu" id="menu" aria-label="Portfolio sections"></nav>
+
+<!-- ABOUT -->
+<section class="panel" id="p-about" aria-labelledby="h-about">
+  <h2 id="h-about">Home: about me</h2>
+  <p class="lead">I'm a finance and accounting professional who moved from Luanda, Angola, to Canada to complete a Master's in International Accounting &amp; Finance. I'm happiest when a set of numbers finally ties out.</p>
+  <div class="grid2">
+    <div class="tcard">
+      <div class="pic"><svg id="cardSprite" viewBox="0 0 12 16"></svg></div>
+      <dl>
+        <dt>Name</dt><dd>Helio Adriano</dd>
+        <dt>From</dt><dd>Luanda, Angola</dd>
+        <dt>Base</dt><dd>Edmonton, AB</dd>
+        <dt>Class</dt><dd>Accountant in training</dd>
+        <dt>Partner</dt><dd>Penny the ledger coin</dd>
+      </dl>
+    </div>
+    <div>
+      <h3 style="margin-top:0">Off the clock</h3>
+      <ul class="chips"><li>Video games</li><li>Anime</li><li>Movies</li><li>Reading</li><li>Working out</li><li>Running</li><li>Karaoke</li></ul>
+      <p style="margin-top:12px">Gaming taught me to like systems: learn the rules, find the pattern, and replay until it's clean. That's what drew me to accounting. Every transaction follows a rule, and the job isn't done until everything reconciles and the statements give a true picture of the business. Working out and running keep me consistent on the days motivation doesn't show up.</p>
+      <p>Karaoke go-to: <b>"We Don't Talk About Bruno"</b> from <i>Encanto</i>.</p>
+      <h3>On my bookshelf</h3>
+      <ul class="books"><li><b>Who Moved My Cheese?</b><span>Spencer Johnson</span></li><li><b>Ikigai: The Japanese Secret to a Long and Happy Life</b><span>Héctor García &amp; Francesc Miralles</span></li><li><b>Rich Dad Poor Dad</b><span>Robert Kiyosaki</span></li></ul>
+      <h3>What I play by</h3>
+      <ul class="chips"><li>Honesty</li><li>Growth</li><li>Curiosity</li><li>Accountability</li></ul>
+    </div>
+  </div>
+  <h3>Badges earned</h3>
+  <p>I treat learning as a habit, not a checkbox. I finished my Master's while working, and I keep adding certifications.</p>
+  <div class="badges">
+    <div class="badge"><b style="background:var(--sun)">M</b>Master of Management, Int'l Accounting &amp; Finance (University of Windsor, 2025)</div>
+    <div class="badge"><b style="background:#8fd0ff">B</b>Bachelor of Financial Management (Agostinho Neto University, 2021)</div>
+    <div class="badge"><b style="background:#7fe0d2">JA</b>Junior Accounting Certificate (Luanda, Angola)</div>
+    <div class="badge"><b style="background:#ff9bc9">G</b>Google Data Analytics Professional Certificate</div>
+    <div class="badge"><b style="background:#9be38f">S</b>Bookkeeping Essentials, Sage University</div>
+    <div class="badge"><b style="background:#c9b6ff">IF</b>Investment Funds in Canada (IFC), Canadian Securities Institute</div>
+    <div class="badge"><b style="background:#ffb36b">BB</b>Bloomberg Market Concepts</div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section class="panel" id="p-work" aria-labelledby="h-work" hidden>
+  <h2 id="h-work">Work HQ: quest log</h2>
+  <p class="lead">Three roles, each one closer to the books: from invoices in Luanda to GL adjustments at a Canadian bank.</p>
+  <ol class="quest">
+    <li style="border-color:var(--red)"><div class="when">Feb 2026 – present · Edmonton, AB</div><h3 style="margin:2px 0 6px">Customer Experience Associate, Scotiabank</h3>Process debit and credit GL adjustments, reconcile business deposit splits before funds post, and trace transaction discrepancies back to their source documents.</li>
+    <li style="border-color:var(--blue)"><div class="when">Dec 2024 – Dec 2025 · Windsor, ON</div><h3 style="margin:2px 0 6px">Volunteer Financial Analyst, Empowered Futures</h3>Prepared journal entries, trial balances and supporting schedules for month-end, and reconciled financial data before reporting deadlines.</li>
+    <li style="border-color:var(--teal)"><div class="when">Dec 2022 – Jun 2023 · Luanda, Angola</div><h3 style="margin:2px 0 6px">Administrative Assistant, Agrobal</h3>Prepared invoices, recorded customer payments, processed supplier invoices for payment, and kept AR and AP records complete.</li>
+  </ol>
+  <h3>Tools</h3>
+  <ul class="chips"><li>Excel (PivotTables, XLOOKUP)</li><li>Tableau</li><li>Google Sheets</li></ul>
+</section>
+
+<!-- CONSOLIDATION -->
+<section class="panel" id="p-consol" aria-labelledby="h-consol" hidden>
+  <h2 id="h-consol">Consolidation Tower</h2>
+  <p class="lead">P Ltd. bought 80% of S Ltd. on Dec 31, 2023 for $15,200. Two years later I consolidated the group in Excel, with every figure linked to the elimination entries. Each scenario has its own sheet.</p>
+  <div class="seg" id="scen" role="group" aria-label="Scenario"></div>
+  <p id="scenNote" style="margin-top:12px"></p>
+  <div class="figs" id="figs"></div>
+  <div class="grid2">
+    <div class="scroll"><table><thead><tr><th>Consolidated income statement, 2025</th><th class="n">$</th></tr></thead><tbody id="is"></tbody></table></div>
+    <div class="scroll"><table><thead><tr><th>Consolidated balance sheet, Dec 31, 2025</th><th class="n">$</th></tr></thead><tbody id="bs"></tbody></table></div>
+  </div>
+  <h3>Step through the elimination entries (base case)</h3>
+  <div class="stepper">
+    <div class="top">
+      <div class="dots" id="dots" aria-hidden="true"></div>
+      <div style="display:flex;gap:8px"><button class="btn" id="prev">◀ Back</button><button class="btn" id="nxt">Next ▶</button></div>
+    </div>
+    <div class="px" id="jeTitle" style="font-size:19px;font-weight:700"></div>
+    <div class="scroll"><table class="je"><thead><tr><th>Account</th><th class="n">Dr</th><th class="n">Cr</th></tr></thead><tbody id="je"></tbody></table></div>
+    <div class="tip"><svg class="pmini" viewBox="0 0 10 12"></svg><span id="jeTip"></span></div>
+  </div>
+  <h3>Where the $3,000 acquisition differential went</h3>
+  <div class="scroll"><table>
+    <thead><tr><th>Item</th><th class="n">At acquisition</th><th class="n">2024</th><th class="n">2025</th><th class="n">Dec 31, 2025</th></tr></thead>
+    <tbody>
+      <tr><td>Inventory</td><td class="n">1,200</td><td class="n">–</td><td class="n">(1,200)</td><td class="n">–</td></tr>
+      <tr><td>Equipment (5-year life)</td><td class="n">1,000</td><td class="n">(200)</td><td class="n">(200)</td><td class="n">600</td></tr>
+      <tr><td>Goodwill</td><td class="n">800</td><td class="n">(100)</td><td class="n">(100)</td><td class="n">600</td></tr>
+      <tr class="tot"><td>Total</td><td class="n">3,000</td><td class="n">(300)</td><td class="n">(1,500)</td><td class="n">1,200</td></tr>
+    </tbody></table></div>
+  <p style="margin-top:10px">Implied value $19,000 (15,200 ÷ 80%) less S's equity of $16,000 gives a $3,000 differential: $1,200 to inventory, $1,000 to equipment and $800 to goodwill. Non-controlling interest starts at $3,800 (20% of $19,000).</p>
+</section>
+
+<!-- IFRS -->
+<section class="panel" id="p-ifrs" aria-labelledby="h-ifrs" hidden>
+  <h2 id="h-ifrs">IFRS Library: graduate projects</h2>
+  <p class="lead">Loblaw paid about $12.4 billion for Shoppers Drug Mart in 2014, and $11.7 billion of that went to intangibles and goodwill rather than net tangible assets. Our five-person group took the deal apart under IFRS 3 and IAS 36 for a University of Windsor graduate course.</p>
+  <h3>Where the purchase price went (fair value, C$ millions)</h3>
+  <div class="bars" id="ppa"></div>
+  <p style="color:var(--muted);font-weight:600">Total net assets acquired: $12,273 million. Prescription files and brands alone make up 68% of it.</p>
+  <div class="figs">
+    <div class="fig"><span>Paid in cash / shares</span><b>54% / 46%</b></div>
+    <div class="fig"><span>Price paid, × EBIT (Bloomberg)</span><b>10.29×</b></div>
+    <div class="fig"><span>Industry median (Bloomberg)</span><b>6.15×</b></div>
+    <div class="fig"><span>New debt</span><b>$5.1B</b></div>
+    <div class="fig"><span>Yearly amortisation</span><b>~$550M</b></div>
+    <div class="fig"><span>Synergy target</span><b>$300M/yr</b></div>
+  </div>
+  <div class="grid2">
+    <div><h3 style="margin-top:0">What it did to the statements</h3><ul style="margin:0;padding-left:20px"><li>An $800 million inventory step-up ran through cost of sales in 2014, squeezing gross margin.</li><li>A $3.5 billion term loan and $1.6 billion of notes funded the $6.7 billion cash portion, raising leverage and interest expense.</li><li>Amortisation, the step-up and deal costs diluted EPS in the short term, and the larger asset base lowered ROA and ROE.</li></ul></div>
+    <div><h3 style="margin-top:0">Goodwill impairment test (IAS 36)</h3><p>Loblaw's audited statements reported no goodwill impairment for the Retail cash-generating unit in the years after the deal. Pharmacy growth, the brand and the synergies kept the recoverable amount above the carrying amount.</p></div>
+  </div>
+  <h3>Also in the library: housing price model</h3>
+  <p>Using 6,700 home sales, I built a multiple regression that explained 71.3% of the variation in price, and checked it with residual analysis, adjusted R² and an F-test.</p>
+  <h3>Standards I've worked with</h3>
+  <ul class="chips"><li>IFRS 3 Business combinations</li><li>IFRS 10 Consolidated statements</li><li>IAS 36 Impairment</li></ul>
+</section>
+
+<!-- LAB -->
+<section class="panel" id="p-lab" aria-labelledby="h-lab" hidden>
+  <h2 id="h-lab">Statements Lab: one month, start to finish</h2>
+  <p class="lead">Millennium Arctic Tours, a new tour company in the Northwest Territories, through its first month of operations (August 2023). From a group assignment in Financial Accounting (BSMM-8110, Fall 2024). I recorded all of the transactions, and the group carried them through to the balance sheet.</p>
+  <div class="figs">
+    <div class="fig"><span>Transactions recorded</span><b>9</b></div>
+    <div class="fig"><span>Adjusted trial balance</span><b>$19,985</b></div>
+    <div class="fig"><span>Net income, August</span><b>$1,480</b></div>
+    <div class="fig"><span>Total assets</span><b>$14,960</b></div>
+    <div class="fig"><span>Liabilities + equity</span><b>$14,960</b></div>
+    <div class="fig"><span>Balanced at every step</span><b>Yes</b></div>
+  </div>
+  <div class="seg" id="cyc" role="group" aria-label="Accounting cycle step"></div>
+  <div class="stepper" style="margin-top:14px">
+    <div class="px" id="cycTitle" style="font-size:19px;font-weight:700;margin-bottom:6px"></div>
+    <div class="scroll"><table><thead id="cycHead"></thead><tbody id="cycBody"></tbody></table></div>
+    <div class="tip"><svg class="pmini" viewBox="0 0 10 12"></svg><span id="cycTip"></span></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="panel" id="p-contact" aria-labelledby="h-contact" hidden>
+  <h2 id="h-contact">Mailbox</h2>
+  <p class="lead">Accounting is the career I want to build. I'm looking for an accounting role where I can keep learning, take on more responsibility over time and grow with the team.</p>
+  <p class="mail">helioadriano30@gmail.com</p>
+  <p><a href="mailto:helioadriano30@gmail.com" class="btn" style="text-decoration:none">Write to Helio</a> <button class="btn" id="copy">Copy email</button> <span id="copied" role="status"></span></p>
+  <p class="mail" style="margin-top:18px">+1 226 739 5745</p>
+  <p><a href="tel:+12267395745" class="btn" style="text-decoration:none">Call Helio</a> <button class="btn" id="copyTel">Copy number</button> <span id="copiedTel" role="status"></span></p>
+</section>
+
+<footer>Site designed and built with Claude. The accounting work and figures are from my own coursework and projects. Group projects are labelled.</footer>
+</div>
+
+<script>
+{
+const C={k:'#13243a',h:'#1b1410',s:'#efc39b',S:'#d49e76',w:'#ffffff',j:'#1fa39b',J:'#137a74',t:'#ffd23f',p:'#2c4a8a',b:'#e8524a',y:'#ffd23f',Y:'#e8a417',o:'#f39a2b',r:'#ff8fa3',m:'#7a3b12',g:'#2f9e44'};
+const HELIO=[
+"...hhhhhh...","..hhhhhhhh..",".hhhhhhhhhh.",".hssssssssh.","..skssssks..","..ssssssss..","...ssSSss...","..jjjttjjj..",
+".jjjjttjjjj.","sjjjjttjjjjs","sjjjjttjjjjs","..JJJJJJJJ..","..pppppppp..","..ppp..ppp..","..ppp..ppp..",".bbbb..bbbb."];
+const WALK=[["..ppp...pp..","..pp....ppp.",".bbb....bbbb"],["..pp...ppp..",".ppp....pp..","bbbb....bbb."]];
+const PENNY=["....gg....","...g......","...yyyy...",".yyYYYYyy.",".yYyyyyYy.","yYykyykyYy","yYryyyyrYy","yYyymmyyYy",".yYyyyyYy.",".yyYYYYyy.","...yyyy...","..o....o.."];
+const px=(rows,ox=0,oy=0)=>rows.map((r,y)=>[...r].map((c,x)=>c==='.'?'':`<rect x="${x+ox}" y="${y+oy}" width="1" height="1" fill="${C[c]}"/>`).join('')).join('');
+const helioRows=f=>f===0?HELIO:HELIO.slice(0,13).concat(WALK[f-1]);
+document.getElementById('cardSprite').innerHTML=px(HELIO);
+document.getElementById('pennyTag').innerHTML=px(PENNY);
+document.querySelectorAll('.pmini').forEach(s=>s.innerHTML=px(PENNY));
+
+const LOC=[
+ {id:'about',name:'Home',x:1,y:2,h:3,roof:'#e8524a',stand:[2,5]},
+ {id:'work',name:'Work HQ',x:5,y:2,h:3,roof:'#3d7be0',stand:[6,5]},
+ {id:'consol',name:'Consolidation Tower',x:9,y:0,h:5,roof:'#d0479c',stand:[10,5]},
+ {id:'ifrs',name:'IFRS Library',x:13,y:2,h:3,roof:'#f39a2b',stand:[14,5]},
+ {id:'lab',name:'Statements Lab',x:17,y:2,h:3,roof:'#2f9e44',stand:[18,5]},
+ {id:'contact',name:'Mailbox',stand:[15,7],mail:[15,8]}];
+const LINES={
+ intro:["Hi! I'm Penny, Helio's pocket-sized ledger buddy.","Welcome to Ledger Town, where Helio keeps his accounting work.","Tap a building on the map, or pick a spot below, and we'll walk over together."],
+ about:["This is Helio's home. He grew up in Luanda, Angola, and now lives in Edmonton.","His trainer card is below: hobbies, favourite books and every badge he's earned so far."],
+ work:["Work HQ! Helio's quest log has three jobs, each one closer to accounting.","He prepared journal entries and trial balances at Empowered Futures. That's real month-end work."],
+ consol:["The Consolidation Tower! Helio built this whole workbook himself.","Switch scenarios to see how the numbers move, then step through the 10 eliminations with me.","Every balance sheet in here balances. I checked."],
+ ifrs:["Shh, it's the IFRS Library.","Helio's group pulled apart Loblaw's $12.4 billion purchase of Shoppers Drug Mart. Look how much of it is goodwill and intangibles!"],
+ lab:["The Statements Lab! This is one whole month of a real business, start to finish.","Tap through the seven steps. Debits always equal credits, and the balance sheet ties out at $14,960."],
+ contact:["The mailbox! Want to talk to Helio?","Email him or give him a call. Both are below."]};
+
+const T=16,map=document.getElementById('map');
+let seed=7;const rnd=()=>(seed=seed*16807%2147483647)/2147483647;
+const R=(x,y,w,h,f,extra='')=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${f}" ${extra}/>`;
+function tree(tx,ty){const x=tx*T,y=ty*T;return R(x+6,y+10,4,6,'#7a4a24')+R(x+1,y+2,14,10,'#2f8f3e')+R(x+3,y,10,2,'#2f8f3e')+R(x+3,y+3,6,4,'#56b85a')+R(x+1,y+10,14,2,'#23702f');}
+function building(L){
+ const x=L.x*T,y=L.y*T,w=3*T,H=L.h*T,roofH=L.h>3?22:16,wy=y+roofH;let s='';
+ s+=R(x+2,y+H-2,w,4,'rgba(0,0,0,.18)');
+ s+=R(x,wy,w,H-roofH,'#fff2d6')+R(x,wy,w,3,'#e4cfa6')+R(x+w-4,wy,4,H-roofH,'#ecd8b0');
+ s+=R(x-2,y+2,w+4,roofH-2,L.roof)+R(x-2,y+roofH-4,w+4,3,'rgba(0,0,0,.22)')+R(x+2,y+2,w-4,2,'rgba(255,255,255,.35)');
+ const win=(wx,wyy)=>R(wx,wyy,8,7,'#13243a')+R(wx+1,wyy+1,6,5,'#8fd0ff')+R(wx+1,wyy+1,3,2,'#e6f6ff');
+ s+=win(x+4,y+H-14)+win(x+w-12,y+H-14);
+ if(L.h>3){s+=win(x+4,wy+6)+win(x+20,wy+6)+win(x+w-12,wy+6)+R(x+23,y-6,2,9,'#13243a')+R(x+25,y-6,8,5,'#ffd23f');}
+ s+=R(x+19,y+H-15,10,15,'#13243a')+R(x+20,y+H-14,8,14,'#7a4a24')+R(x+26,y+H-8,1,2,'#ffd23f');
+ if(L.lock){for(let i=0;i<6;i++)s+=R(x+2+i*8,y+H-7,4,3,i%2?'#13243a':'#ffd23f');s+=R(x+w-2,y+H-6,5,6,'#f39a2b')+R(x+w-1,y+H-4,3,1,'#fff');}
+ s+=`<rect class="hit" x="${x-2}" y="${y}" width="${w+4}" height="${H}" fill="transparent"/>`;
+ return `<g class="bld" tabindex="0" role="button" aria-label="Go to ${L.name}" data-id="${L.id}">${s}</g>`;}
+function drawMap(){
+ let s=R(0,0,320,192,'#7cd16b');
+ for(let i=0;i<70;i++){const x=Math.floor(rnd()*318),y=Math.floor(rnd()*190);s+=R(x,y,1,2,'#5fb556')+R(x+2,y+1,1,1,'#5fb556');}
+ s+=R(0,6*T,320,T,'#f3d58b')+R(0,6*T,320,1,'#d9b464')+R(0,7*T-1,320,1,'#d9b464');
+ LOC.filter(l=>l.x!==undefined).forEach(l=>s+=R(l.stand[0]*T+2,5*T,12,T,'#f3d58b'));
+ s+=R(15*T+2,7*T,12,T,'#f3d58b');
+ [[4,1],[8,3],[12,1],[16,3],[0,1],[19,0]].forEach(([a,b])=>s+=tree(a,b));
+ [[0,8],[0,10],[18,9],[19,11],[13,11]].forEach(([a,b])=>s+=tree(a,b));
+ s+=R(2*T,8*T+4,6*T,3*T-4,'#3fa9e0',' rx="10"')+R(2*T+4,8*T+8,6*T-8,3*T-12,'#4fbbee',' rx="8"');
+ s+=R(3*T,9*T,10,2,'#c9ecff')+R(5*T+6,10*T,14,2,'#c9ecff')+R(3*T+20,9*T+12,8,6,'#2f9e44',' rx="3"');
+ for(let i=0;i<16;i++){const x=9*T+Math.floor(rnd()*5*T),y=8*T+4+Math.floor(rnd()*3*T-8);s+=R(x,y,3,3,['#ff8fa3','#fff','#ffd23f','#d0479c'][i%4])+R(x+1,y+1,1,1,'#f39a2b');}
+ s+=R(10*T+8,9*T+2,30,14,'#7a4a24')+R(10*T+10,9*T+4,26,10,'#c98a4b')+R(10*T+12,9*T+16,3,8,'#7a4a24')+R(10*T+31,9*T+16,3,8,'#7a4a24');
+ const mx=15*T,my=8*T;s+=`<g class="bld" tabindex="0" role="button" aria-label="Go to Mailbox" data-id="contact">`+R(mx+7,my+6,3,10,'#7a4a24')+R(mx+2,my,13,8,'#e8524a')+R(mx+2,my,13,2,'#ff7a6b')+R(mx+4,my+3,7,2,'#13243a')+R(mx+15,my-3,2,6,'#ffd23f')+`<rect class="hit" x="${mx}" y="${my-4}" width="18" height="22" fill="transparent"/></g>`;
+ LOC.filter(l=>l.x!==undefined).forEach(l=>s+=building(l));
+ s+=`<g id="mark" style="display:none"><g class="marker"><polygon points="0,0 10,0 5,6" fill="#ffd23f" stroke="#13243a" stroke-width="1.5"/></g></g>`;
+ s+=`<ellipse id="pshadow" rx="4" ry="1.5" fill="rgba(0,0,0,.25)"/><g id="penny">${px(PENNY)}</g>`;
+ s+=`<ellipse id="hshadow" rx="6" ry="2" fill="rgba(0,0,0,.25)"/><g id="helio"></g>`;
+ map.innerHTML=s;}
+drawMap();
+const hG=document.getElementById('helio'),pG=document.getElementById('penny'),hS=document.getElementById('hshadow'),pS=document.getElementById('pshadow'),mark=document.getElementById('mark');
+let pos={x:11,y:6},face=1,frame=0,trail=[],pp={x:12.2,y:6.3};
+function place(){
+ const hx=pos.x*T+2,hy=pos.y*T-4;
+ hG.innerHTML=px(helioRows(frame));
+ hG.setAttribute('transform',face<0?`translate(${hx+12},${hy}) scale(-1,1)`:`translate(${hx},${hy})`);
+ hS.setAttribute('cx',hx+6);hS.setAttribute('cy',hy+16);
+ const qx=pp.x*T+3,qy=pp.y*T+2;pG.setAttribute('transform',`translate(${qx},${qy})`);pS.setAttribute('cx',qx+5);pS.setAttribute('cy',qy+12);}
+place();
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let walking=null;
+function walkTo(tx,ty,done){
+ cancelAnimationFrame(walking);
+ const pts=[];if(pos.y!==6)pts.push({x:pos.x,y:6});if(tx!==pos.x)pts.push({x:tx,y:6});pts.push({x:tx,y:ty});
+ if(reduce){pos={x:tx,y:ty};pp={x:tx+1,y:ty+.3};frame=0;place();done();return;}
+ let last=performance.now(),acc=0;
+ const step=now=>{
+  const dt=Math.min(.05,(now-last)/1000);last=now;let m=7*dt;
+  while(m>0&&pts.length){const p=pts[0],dx=p.x-pos.x,dy=p.y-pos.y,d=Math.hypot(dx,dy);
+   if(d<=m){pos={x:p.x,y:p.y};pts.shift();m-=d;}else{pos={x:pos.x+dx/d*m,y:pos.y+dy/d*m};if(dx)face=dx>0?1:-1;m=0;}}
+  trail.push({...pos});if(trail.length>9)pp={...trail.shift()};
+  acc+=dt;frame=pts.length?1+Math.floor(acc*8)%2:0;place();
+  if(pts.length)walking=requestAnimationFrame(step);else{trail=[];pp={x:pos.x+(face>0?-1:1)*.9,y:pos.y+.3};place();done();}};
+ walking=requestAnimationFrame(step);}
+
+const say=document.getElementById('say'),nextMark=document.getElementById('nextMark'),box=document.getElementById('box');
+let queue=[],typing=null,full='';
+function talk(lines){queue=lines.slice();nextLine();}
+function nextLine(){
+ clearInterval(typing);
+ if(!queue.length){nextMark.hidden=true;return;}
+ full=queue.shift();nextMark.hidden=!queue.length;
+ if(reduce){say.textContent=full;return;}
+ let i=0;say.textContent='';typing=setInterval(()=>{i+=2;say.textContent=full.slice(0,i);if(i>=full.length)clearInterval(typing);},22);}
+function advance(){if(say.textContent.length<full.length){clearInterval(typing);say.textContent=full;}else nextLine();}
+box.addEventListener('click',advance);
+box.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();advance();}});
+
+const menu=document.getElementById('menu');
+menu.innerHTML=LOC.map(l=>`<button type="button" data-id="${l.id}" aria-pressed="false"><i style="background:${l.roof||'#e8524a'}"></i>${l.name}</button>`).join('');
+function go(id,first){
+ const L=LOC.find(l=>l.id===id);
+ menu.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.id===id));
+ document.querySelectorAll('.panel').forEach(p=>p.hidden=p.id!=='p-'+id);
+ const mx=(L.mail?L.mail[0]*T+4:L.x*T+19),my=(L.mail?L.mail[1]*T-12:L.y*T-(L.h>3?14:9));
+ mark.setAttribute('transform',`translate(${mx},${my})`);mark.style.display='';
+ if(first){talk(LINES.intro.concat(LINES.about));return;}
+ talk(["Let's go!"]);
+ walkTo(L.stand[0],L.stand[1],()=>talk(LINES[id]));}
+menu.addEventListener('click',e=>{const b=e.target.closest('button');if(b)go(b.dataset.id);});
+map.addEventListener('click',e=>{const g=e.target.closest('.bld');if(g)go(g.dataset.id);});
+map.addEventListener('keydown',e=>{const g=e.target.closest('.bld');if(g&&(e.key==='Enter'||e.key===' ')){e.preventDefault();go(g.dataset.id);}});
+
+/* consolidation data, from Helio's workbook */
+const SC=[
+ {k:'base',n:'Base case',note:"S sold $10,000 of goods to P, and $1,400 of S's profit is still in P's ending inventory. It's an upstream sale, so NCI shares the deferral.",cos:42600,ni:26100,nci:1420,par:24680,reo:102900,ree:119580,inv:49600,tot:206300,ncib:5520},
+ {k:'inv24',n:'Inventory sold in 2024',note:"Same sale, but the $1,200 fair-value increase on the acquired inventory is written off in 2024 instead of 2025, so 2025 profit is higher.",cos:41400,ni:27300,nci:1660,par:25640,reo:101940,ree:119580,inv:49600,tot:206300,ncib:5520},
+ {k:'real',n:'Profit realised',note:"Last year's $1,400 of unrealised profit is sold to outsiders in 2025 and comes back into income.",cos:39800,ni:28900,nci:1980,par:26920,reo:101500,ree:120420,inv:51000,tot:207700,ncib:6080},
+ {k:'down',n:'Downstream sale',note:"P sells to S instead. The $1,400 of unrealised profit sits in P's books, so it reduces only P's shareholders' share and NCI goes up.",cos:42600,ni:26100,nci:1700,par:24400,reo:102900,ree:119300,inv:49600,tot:206300,ncib:5800}];
+const f=v=>v<0?'('+Math.abs(v).toLocaleString('en-CA')+')':v.toLocaleString('en-CA');
+const scen=document.getElementById('scen');
+scen.innerHTML=SC.map((s,i)=>`<button class="btn" type="button" data-i="${i}" aria-pressed="${i===0}">${s.n}</button>`).join('');
+function showScen(i){
+ const s=SC[i];scen.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.i===i));
+ document.getElementById('scenNote').textContent=s.note;
+ document.getElementById('figs').innerHTML=[['Net income',s.ni],['NCI share',s.nci],["P's share",s.par],['Retained earnings',s.ree],['NCI, balance sheet',s.ncib],['Total assets',s.tot]].map(([a,b])=>`<div class="fig"><span>${a}</span><b>$${f(b)}</b></div>`).join('');
+ const rows=(a)=>a.map(([l,v,c])=>`<tr${c?' class="tot"':''}><td>${l}</td><td class="n">${f(v)}</td></tr>`).join('');
+ document.getElementById('is').innerHTML=rows([['Sales (after $10,000 eliminated)',90000],['Cost of sales',-s.cos],['Goodwill impairment',-100],['Other expenses, incl. $200 amortisation',-21200],['Net income',s.ni,1],['To non-controlling interest',s.nci],["To P's shareholders",s.par],['Retained earnings, Jan 1',s.reo],['Dividends (P only)',-8000],['Retained earnings, Dec 31',s.ree,1]]);
+ const misc=115500,eq=40600,gw=600;
+ document.getElementById('bs').innerHTML=rows([['Miscellaneous assets',misc],['Inventory',s.inv],['Equipment',eq],['Goodwill',gw],['Total assets',s.tot,1],['Liabilities',31200],['Common shares (P only)',50000],['Retained earnings',s.ree],['Non-controlling interest',s.ncib],['Total liabilities & equity',31200+50000+s.ree+s.ncib,1]]);}
+scen.addEventListener('click',e=>{const b=e.target.closest('button');if(b)showScen(+b.dataset.i);});
+showScen(0);
+
+const JE=[
+ {t:'Set up NCI at acquisition',d:[['Investment in S',3800]],c:[['Non-controlling interest',3800]],tip:"The 20% we don't own still counts. Its share of the $19,000 implied value is $3,800."},
+ {t:"Eliminate the investment against S's equity",d:[['Common shares (S)',10000],['Retained earnings (S, at acquisition)',6000],['Acquisition differential',3000]],c:[['Investment in S',19000]],tip:"You can't own yourself! P's investment and S's equity at acquisition cancel out, and $3,000 is left over."},
+ {t:'Allocate the differential, less 2024 amortisation',d:[['Inventory',1200],['Equipment',800],['Goodwill',700],['Retained earnings',300]],c:[['Acquisition differential',3000]],tip:"The fair-value bumps go onto the real assets. 2024's $300 of amortisation is already gone, so it comes out of opening retained earnings."},
+ {t:"Eliminate S's dividend",d:[['Dividend income (P)',2400],['Non-controlling interest',600]],c:[['Dividends (S)',3000]],tip:"Money moving inside the group isn't income. P's 80% cancels, and the NCI's 20% reduces NCI."},
+ {t:"NCI's share of S's growth to Jan 1",d:[['Retained earnings',900]],c:[['Non-controlling interest',900]],tip:"20% × (10,800 − 6,000 − 300) = $900. That piece of S's growth belongs to the minority owners."},
+ {t:'Amortise the differential for 2025',d:[['Amortisation expense',200],['Goodwill impairment',100]],c:[['Equipment',200],['Goodwill',100]],tip:"$1,000 ÷ 5 years = $200 a year on the equipment, plus $100 of goodwill impairment."},
+ {t:'Acquired inventory is sold',d:[['Cost of sales',1200]],c:[['Inventory',1200]],tip:"The inventory that was written up at acquisition is sold this year, so its $1,200 bump becomes cost of sales."},
+ {t:'Eliminate intercompany sales',d:[['Sales',10000]],c:[['Cost of sales',10000]],tip:"S selling to P is like moving money between pockets. $10,000 comes out of both sales and cost of sales."},
+ {t:'Defer unrealised profit in ending inventory',d:[['Cost of sales',1400]],c:[['Inventory',1400]],tip:"P still holds goods with $1,400 of S's markup in them. The group can't recognise that profit until the goods are sold to outsiders."},
+ {t:"NCI's share of 2025 income",d:[['NCI share of income',1420]],c:[['Non-controlling interest',1420]],tip:"20% × (10,000 − 1,400 − 1,500) = $1,420. Done, and the balance sheet balances at $206,300!"}];
+let ji=0;
+const dots=document.getElementById('dots');dots.innerHTML=JE.map(()=>'<span></span>').join('');
+function showJE(){
+ const e=JE[ji];
+ document.getElementById('jeTitle').textContent=`Entry ${ji+1} of ${JE.length}: ${e.t}`;
+ document.getElementById('je').innerHTML=e.d.map(([a,v])=>`<tr><td>${a}</td><td class="n">${f(v)}</td><td></td></tr>`).join('')+e.c.map(([a,v])=>`<tr class="cr"><td>${a}</td><td></td><td class="n">${f(v)}</td></tr>`).join('');
+ document.getElementById('jeTip').textContent=e.tip;
+ [...dots.children].forEach((d,i)=>d.classList.toggle('on',i<=ji));
+ document.getElementById('prev').disabled=ji===0;document.getElementById('nxt').disabled=ji===JE.length-1;}
+document.getElementById('prev').addEventListener('click',()=>{if(ji>0){ji--;showJE();}});
+document.getElementById('nxt').addEventListener('click',()=>{if(ji<JE.length-1){ji++;showJE();}});
+showJE();
+
+const CYC=[
+ {n:'1 Journal',t:'General journal, August 2023',h:['Date','Account','Dr','Cr'],r:[
+  ['Aug 1','Office furniture',5300,''],['','Accounts payable','',5300,'cr'],
+  ['Aug 1','Cash',7100,''],['','Contributed capital','',7100,'cr'],
+  ['Aug 2','Cash',4050,''],['','Unearned revenue','',4050,'cr'],
+  ['Aug 3','Prepaid rent',6150,''],['','Cash','',6150,'cr'],
+  ['Aug 4','Cash',3100,''],['','Service revenue','',3100,'cr'],
+  ['Aug 7','Hotel expense',1550,''],['','Cash','',1550,'cr'],
+  ['Aug 15','Drawings',600,''],['','Cash','',600,'cr'],
+  ['Aug 22','No journal entry required','',''],
+  ['Aug 31','Wage expense',1310,''],['','Cash','',1310,'cr'],
+  ['','Total',29160,29160,'tot']],
+  tip:"The caribou tour cash on Aug 2 isn't revenue yet. The tour hasn't happened, so it's a liability. And the Aug 22 meeting about a $155,000 contract? No exchange happened, so there's no entry."},
+ {n:'2 Trial balance',t:'Unadjusted trial balance, August 31, 2023',h:['Account','Dr','Cr'],r:[
+  ['Cash',4640,''],['Office furniture',5300,''],['Prepaid rent',6150,''],['Accounts payable','',5300],['Unearned revenue','',4050],['Contributed capital','',7100],['Drawings',600,''],['Service revenue','',3100],['Hotel expense',1550,''],['Wage expense',1310,''],['Total',19550,19550,'tot']],
+  tip:"Cash checks out: 7,100 + 4,050 + 3,100 in, minus 6,150 + 1,550 + 600 + 1,310 out = $4,640. Debits equal credits at $19,550."},
+ {n:'3 Adjustments',t:'Adjusting entries, August 31, 2023',h:['Entry','Account','Dr','Cr'],r:[
+  ['a','Depreciation expense',105,''],['','Accumulated depreciation','',105,'cr'],
+  ['b','Unearned revenue',2700,''],['','Service revenue','',2700,'cr'],
+  ['c','Rent expense',1025,''],['','Prepaid rent','',1025,'cr'],
+  ['d','Telephone expense',330,''],['','Accounts payable','',330,'cr'],
+  ['','Total',4160,4160,'tot']],
+  tip:"a) (5,300 − 260 residual) ÷ 4 years ÷ 12 = $105. b) Two-thirds of the $4,050 tour is earned = $2,700. c) One month of six = $1,025. d) The unbilled phone bill is accrued: $330."},
+ {n:'4 Adjusted TB',t:'Adjusted trial balance, August 31, 2023',h:['Account','Dr','Cr'],r:[
+  ['Cash',4640,''],['Office furniture',5300,''],['Accumulated depreciation','',105],['Prepaid rent',5125,''],['Accounts payable','',5630],['Unearned revenue','',1350],['Contributed capital','',7100],['Drawings',600,''],['Service revenue','',5800],['Hotel expense',1550,''],['Wage expense',1310,''],['Rent expense',1025,''],['Telephone expense',330,''],['Depreciation expense',105,''],['Total',19985,19985,'tot']],
+  tip:"Four new balances came in from the adjustments, and the trial balance still balances, now at $19,985."},
+ {n:'5 Income statement',t:'Income statement, month ended August 31, 2023',h:['','$'],r:[
+  ['Service revenue',5800],['Hotel expense',-1550],['Wage expense',-1310],['Rent expense',-1025],['Telephone expense',-330],['Depreciation expense',-105],['Total expenses',-4320,'','tot'],['Net income',1480,'','tot']],
+  tip:"Revenue of $3,100 + $2,700 earned = $5,800, less $4,320 of expenses. The first month makes a profit: $1,480."},
+ {n:'6 Changes in equity',t:'Statement of changes in equity, month ended August 31, 2023',h:['','$'],r:[
+  ['Retained earnings, August 1',0],['Net income',1480],['Dividends',0],['Retained earnings, August 31',1480,'','tot']],
+  tip:"A brand-new business starts at zero, so the month's profit becomes the opening balance of retained earnings."},
+ {n:'7 Balance sheet',t:'Balance sheet, August 31, 2023',h:['','$'],r:[
+  ['Cash',4640],['Prepaid rent',5125],['Total current assets',9765,'','tot'],['Office furniture',5300],['Less: accumulated depreciation',-105],['Total assets',14960,'','tot'],
+  ['Accounts payable',5630],['Unearned revenue',1350],['Total current liabilities',6980,'','tot'],
+  ['Contributed capital',7100],['Retained earnings',1480],['Drawings',-600],['Total owner\'s equity',7980,'','tot'],['Total liabilities & equity',14960,'','tot']],
+  tip:"Assets are listed by liquidity, and $14,960 of assets equals $6,980 of liabilities plus $7,980 of equity."}];
+const PPA=[['Prescription files',5040,'#3d7be0'],['Brands',3340,'#d0479c'],['Goodwill',2251,'#ffd23f'],['Other intangibles',600,'#1fa39b'],['Net tangible assets',552,'#f39a2b'],['Optimum loyalty program',490,'#e8524a']];
+document.getElementById('ppa').innerHTML=PPA.map(([n,v,c])=>`<div class="bar"><span>${n}</span><div class="tr"><div class="fl" style="width:${(v/5040*100).toFixed(1)}%;background:${c}"></div></div><b>${f(v)}</b></div>`).join('');
+const cyc=document.getElementById('cyc');
+cyc.innerHTML=CYC.map((s,i)=>`<button class="btn" type="button" data-i="${i}" aria-pressed="${i===0}">${s.n}</button>`).join('');
+const cell=v=>v===''?'<td></td>':typeof v==='number'?`<td class="n">${f(v)}</td>`:`<td>${v}</td>`;
+function showCyc(i){
+ const s=CYC[i],w=s.h.length;
+ cyc.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.i===i));
+ document.getElementById('cycTitle').textContent=s.t;
+ document.getElementById('cycHead').innerHTML='<tr>'+s.h.map(x=>`<th${x==='Dr'||x==='Cr'||x==='$'?' class="n"':''}>${x}</th>`).join('')+'</tr>';
+ document.getElementById('cycBody').innerHTML=s.r.map(r=>{const cls=[r[w],r[w+1]].includes('tot')?' class="tot"':[r[w],r[w+1]].includes('cr')?' class="cr"':'';return `<tr${cls}>`+r.slice(0,w).map((v,j)=>j===1&&w===4&&cls===' class="cr"'?`<td style="padding-left:28px">${v}</td>`:cell(v)).join('')+'</tr>';}).join('');
+ document.getElementById('cycTip').textContent=s.tip;}
+cyc.addEventListener('click',e=>{const b=e.target.closest('button');if(b)showCyc(+b.dataset.i);});
+showCyc(0);
+
+document.getElementById('copyTel').addEventListener('click',()=>{
+ const out=document.getElementById('copiedTel');
+ navigator.clipboard.writeText('+12267395745').then(()=>out.textContent='Copied!',()=>out.textContent='Select the number above to copy it.');});
+document.getElementById('copy').addEventListener('click',()=>{
+ const out=document.getElementById('copied');
+ navigator.clipboard.writeText('helioadriano30@gmail.com').then(()=>out.textContent='Copied!',()=>out.textContent='Select the email above to copy it.');});
+
+go('about',true);
+}
+</script>
+</body>
+</html>
